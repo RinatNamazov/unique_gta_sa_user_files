@@ -1,0 +1,11 @@
+[package]
+name = "unique_gta_sa_user_files"
+version = "0.1.0"
+authors = ["Rinat Namazov <rinat.namazov@rinwares.com>"]
+edition = "2018"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+winapi = { version = "0.3", features = ["memoryapi", "libloaderapi"] }
