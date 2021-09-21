@@ -1,6 +1,6 @@
 use winapi::shared::minwindef::{BOOL, DWORD, HMODULE, LPVOID, TRUE};
 use winapi::um::libloaderapi::DisableThreadLibraryCalls;
-use winapi::um::winnt::{DLL_PROCESS_ATTACH, DLL_PROCESS_DETACH};
+use winapi::um::winnt::DLL_PROCESS_ATTACH;
 
 pub mod plugin;
 pub mod utils;
@@ -13,12 +13,10 @@ pub extern "system" fn DllMain(instance: HMODULE, reason: DWORD, _reserved: LPVO
             unsafe {
                 DisableThreadLibraryCalls(instance);
             }
-            plugin::initialize();
-        }
-        DLL_PROCESS_DETACH => {
-            plugin::uninitialize();
+            let plugin = Box::new(plugin::Plugin::new());
+            Box::leak(plugin);
         }
         _ => {}
     }
-    return TRUE;
+    TRUE
 }
